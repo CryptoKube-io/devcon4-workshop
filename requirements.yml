@@ -1,0 +1,26 @@
+- src: https://github.com/CryptoKube-io/ansible-ubuntu
+  name: ubuntu
+
+- src: https://github.com/CryptoKube-io/ansible-ansible
+  name: ansible
+
+- src: https://github.com/CryptoKube-io/ansible-terraform
+  name: terraform
+
+- src: https://github.com/CryptoKube-io/ansible-packer
+  name: packer
+
+#- src: https://github.com/CryptoKube-io/ansible-consul
+#  name: consul
+#
+#- src: https://github.com/CryptoKube-io/ansible-haproxy
+#  name: haproxy
+#
+#- src: https://github.com/CryptoKube-io/ansible-nginx
+#  name: nginx
+#
+#- src: https://github.com/CryptoKube-io/ansible-parity
+#  name: parity
+#
+#- src: https://github.com/CryptoKube-io/ansible-geth
+#  name: geth
