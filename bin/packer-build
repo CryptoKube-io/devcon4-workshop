@@ -1,0 +1,35 @@
+#!/bin/bash
+
+PKR_BLD="$1"
+PKR_BIN="/usr/local/bin/packer"
+SSH_ENV="$HOME/.ssh/environment"
+b_dir="$( cd "$( dirname "$0" )/.." && pwd )"
+
+function start_agent {
+    echo "Initialising new SSH agent..."
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent;
+fi
+
+echo -e '\n\n\n'
+/usr/bin/env 
+echo -e '\n\n\n'
+ssh-add -L
+echo -e '\n\n\n'
+
+[ "x${PKR_BLD}x" != "xx" ] && packer_cmd="packer build -only=$PKR_BLD packer.json" || packer_cmd="packer build packer.json"
+$packer_cmd

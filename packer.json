@@ -1,0 +1,29 @@
+{
+  "variables": {
+    "homedir": "{{env `HOME`}}",
+    "do_token": "{{ env `DO_TOKEN`}}",
+    "do_region": "{{ env `DO_REGION`}}"
+  },
+
+  "provisioners": [
+    {
+      "type": "ansible",
+      "playbook_file": "mgmt.yml"
+    }
+  ],
+
+  "builders": [
+    {
+      "type": "digitalocean",
+      "api_token": "{{user `do_token`}}",
+      "image": "ubuntu-18-04-x64",
+      "size": "2gb",
+      "region": "{{user `do_region`}}",
+      "communicator": "ssh",
+      "ssh_agent_auth": "true",
+      "ssh_disable_agent_forwarding": "false",
+      "ssh_username": "root",
+      "ssh_private_key_file": "{{user `homedir`}}/.ssh/id_rsa"
+    }
+  ]
+}

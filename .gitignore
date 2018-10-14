@@ -7,3 +7,5 @@ site.retry
 *.pyc
 .terraform/
 roles/*
+*.pem
+crash.log
