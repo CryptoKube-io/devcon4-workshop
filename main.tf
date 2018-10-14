@@ -7,17 +7,17 @@ resource "digitalocean_tag" "project_tag" {
   name = "${var.project}"
 }
 
-# Creating Consul Nodes
-resource "digitalocean_droplet" "consul_node" {
-  count              = "${var.consul_nodes["count"]}"
-  image              = "${var.image_slug}"
-  name               = "${var.project}-consul-${format("%02d", count.index + 1)}"
-  region             = "${var.region}"
-  size               = "${var.consul_nodes["size"]}"
-  private_networking = true
-  ssh_keys           = ["${split(",",var.keys)}"]
-  user_data          = "${data.template_file.user_data.rendered}"
-  tags               = ["${digitalocean_tag.backend_tag.id}", "${digitalocean_tag.project_tag.id}"]
+# Creating Management Node
+resource "digitalocean_droplet" "mgmt_node" {
+  count               = "1"
+  image               = "${var.image_slug}"
+  name                = "${var.project}-mgmt"
+  region              = "${var.region}"
+  size                = "2gb"
+  private_networking  = true
+  ssh_keys            = ["${split(",",var.keys)}"]
+  user_data           = "${data.template_file.user_data.rendered}"
+  tags                = ["${digitalocean_tag.backend_tag.id}", "${digitalocean_tag.project_tag.id}"]
 
   lifecycle {
     create_before_destroy = true
@@ -30,6 +30,31 @@ resource "digitalocean_droplet" "consul_node" {
     timeout     = "2m"
   }
 }
+
+## Creating Consul Nodes
+#resource "digitalocean_droplet" "consul_node" {
+#  count              = "${var.consul_nodes["count"]}"
+#  image              = "${var.image_slug}"
+#  name               = "${var.project}-consul-${format("%02d", count.index + 1)}"
+#  region             = "${var.region}"
+#  size               = "${var.consul_nodes["size"]}"
+#  private_networking = true
+#  ssh_keys           = ["${split(",",var.keys)}"]
+#  user_data          = "${data.template_file.user_data.rendered}"
+#  tags               = ["${digitalocean_tag.backend_tag.id}", "${digitalocean_tag.project_tag.id}"]
+#
+#  lifecycle {
+#    create_before_destroy = true
+#  }
+#
+#  connection {
+#    user        = "root"
+#    type        = "ssh"
+#    private_key = "${var.private_key_path}"
+#    timeout     = "2m"
+#  }
+#}
+
 ## Creating Web Server Nodes
 #resource "digitalocean_droplet" "web_node" {
 #  count              = "${var.node_count}"

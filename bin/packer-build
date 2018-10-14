@@ -3,7 +3,10 @@
 PKR_BLD="$1"
 PKR_BIN="/usr/local/bin/packer"
 SSH_ENV="$HOME/.ssh/environment"
+<<<<<<< HEAD
 b_dir="$( cd "$( dirname "$0" )/.." && pwd )"
+=======
+>>>>>>> 8e20459... mgmt node
 
 function start_agent {
     echo "Initialising new SSH agent..."
@@ -31,5 +34,9 @@ echo -e '\n\n\n'
 ssh-add -L
 echo -e '\n\n\n'
 
+<<<<<<< HEAD
 [ "x${PKR_BLD}x" != "xx" ] && packer_cmd="packer build -only=$PKR_BLD packer.json" || packer_cmd="packer build packer.json"
+=======
+[ "x${PKR_BLD}x" != "xx" ] && packer_cmd="${PKR_BIN} build -only=$PKR_BLD packer/packer.json" || packer_cmd="${PKR_BIN} build packer/packer.json"
+>>>>>>> 8e20459... mgmt node
 $packer_cmd

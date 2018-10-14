@@ -1,24 +1,47 @@
 ---
 # Ansible playbook to call the roles required to deploy our Ethereum stack
-- hosts: all
-  gather_facts: yes
-  become: True
-  roles:
-    - ubuntu
-
-- hosts: consul_node
+- hosts: mgmt_node
   become: True
   tasks:
     - import_role:
-        name: consul
-      vars:
-        consul_use_systemd: true
-        consul_use_upstart: false
-        consul_is_server: true
-        consul_bootstrap: true
-        consul_is_ui: true
-        consul_datacenter: "devcon4"
-        consul_bind_address: "{{ ansible_default_ipv4['address'] }}"
+        role: ubuntu
+      tags: role-ubuntu
+
+    - import_role:
+        role: ansible
+      tags: role-ansible
+
+    - import_role:
+        role: terraform
+      tags: role-terraform
+
+    - import_role:
+        role: packer
+      tags: role-packer
+
+    - name: Install packages for workshop
+      apt:
+        name: jq
+
+    - name: Clone git repo for workshop
+      git:
+        repo: https://github.com/CryptoKube-io/exercise
+        dest: /root/devcon4
+
+
+#- hosts: consul_node
+#  become: True
+#  tasks:
+#    - import_role:
+#        name: consul
+#      vars:
+#        consul_use_systemd: true
+#        consul_use_upstart: false
+#        consul_is_server: true
+#        consul_bootstrap: true
+#        consul_is_ui: true
+#        consul_datacenter: "devcon4"
+#        consul_bind_address: "{{ ansible_default_ipv4['address'] }}"
 
 #- hosts: eth_loadbalancer
 #  become: True

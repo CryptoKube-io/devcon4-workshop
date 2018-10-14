@@ -12,3 +12,4 @@ packages:
   - python-pip
   - python-requests
   - python-dev
+  - python-simplejson
