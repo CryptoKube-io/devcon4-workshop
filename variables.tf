@@ -46,6 +46,15 @@ variable "consul_nodes" {
     size = "s-1vcpu-1gb"
   }
 }
+variable "eth_node_count" {
+  description = "Number of Ethereum nodes."
+  default = 2
+}
+
+variable "eth_data_size" {
+  description = "Size of Ethereum node data volume in GB."
+  default = 200
+}
 
 variable "node_count" {
   description = "Number of Droplets to provision."

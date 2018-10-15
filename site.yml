@@ -1,63 +1,25 @@
 ---
 # Ansible playbook to call the roles required to deploy our Ethereum stack
-- hosts: mgmt_node
+
+- hosts: eth_node
   become: True
+  become_user: root
+  vars:
+    data_vol: /dev/sda
+    data_dir: /opt/geth/.ethereum
   tasks:
     - import_role:
         role: ubuntu
       tags: role-ubuntu
 
-    - import_role:
-        role: ansible
-      tags: role-ansible
+    - name: Format data volume
+      filesystem:
+        dev: '{{data_vol}}'
+        fstype: ext4
 
-    - import_role:
-        role: terraform
-      tags: role-terraform
-
-    - import_role:
-        role: packer
-      tags: role-packer
-
-    - name: Install packages for workshop
-      apt:
-        name: jq
-
-    - name: Clone git repo for workshop
-      git:
-        repo: https://github.com/CryptoKube-io/exercise
-        dest: /root/devcon4
-
-
-#- hosts: consul_node
-#  become: True
-#  tasks:
-#    - import_role:
-#        name: consul
-#      vars:
-#        consul_use_systemd: true
-#        consul_use_upstart: false
-#        consul_is_server: true
-#        consul_bootstrap: true
-#        consul_is_ui: true
-#        consul_datacenter: "devcon4"
-#        consul_bind_address: "{{ ansible_default_ipv4['address'] }}"
-
-#- hosts: eth_loadbalancer
-#  become: True
-#  tasks:
-#    - import_role:
-#        name: eth-lb
-#
-#- hosts: geth_node
-#  become: True
-#  order: inventory
-#  tasks:
-#    - import_role:
-#        name: geth
-#
-#- hosts: web_node
-#  become: True
-#  tasks:
-#    - import_role:
-#        name: nginx
+    - name: Mount data volume
+      mount:
+        path: '{{data_dir}}'
+        src: '{{data_vol}}'
+        fstype: ext4
+        state: mounted

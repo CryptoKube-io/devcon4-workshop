@@ -7,16 +7,51 @@ resource "digitalocean_tag" "project_tag" {
   name = "${var.project}"
 }
 
-# Creating Management Node
-resource "digitalocean_droplet" "mgmt_node" {
-  count               = "1"
+## Creating Management Node
+#resource "digitalocean_droplet" "mgmt_node" {
+#  count               = "1"
+#  image               = "${var.image_slug}"
+#  name                = "${var.project}-mgmt"
+#  region              = "${var.region}"
+#  size                = "2gb"
+#  private_networking  = true
+#  ssh_keys            = ["${split(",",var.keys)}"]
+#  user_data           = "${data.template_file.user_data.rendered}"
+#  tags                = ["${digitalocean_tag.backend_tag.id}", "${digitalocean_tag.project_tag.id}"]
+#
+#  lifecycle {
+#    create_before_destroy = true
+#  }
+#
+#  connection {
+#    user        = "root"
+#    type        = "ssh"
+#    private_key = "${var.private_key_path}"
+#    timeout     = "2m"
+#  }
+#}
+
+# Creating Ethereum data volume
+resource "digitalocean_volume" "eth_node_data" {
+  count                   = "${var.eth_node_count}"
+  region                  = "${var.region}"
+  name                    = "${var.project}-eth-${format("%02d", count.index + 1)}_data"
+  size                    = "${var.eth_data_size}"
+  initial_filesystem_type = "ext4"
+  description             = "Ethereum node data volume"
+}
+
+# Creating Ethereum node
+resource "digitalocean_droplet" "eth_node" {
+  count               = "${var.eth_node_count}"
   image               = "${var.image_slug}"
-  name                = "${var.project}-mgmt"
+  name                = "${var.project}-eth-${format("%02d", count.index + 1)}"
   region              = "${var.region}"
   size                = "2gb"
   private_networking  = true
   ssh_keys            = ["${split(",",var.keys)}"]
   user_data           = "${data.template_file.user_data.rendered}"
+  volume_ids          = ["${element(digitalocean_volume.eth_node_data.*.id, count.index)}"]
   tags                = ["${digitalocean_tag.backend_tag.id}", "${digitalocean_tag.project_tag.id}"]
 
   lifecycle {
@@ -30,6 +65,13 @@ resource "digitalocean_droplet" "mgmt_node" {
     timeout     = "2m"
   }
 }
+
+## Attaching Ethereum data volume
+#resource "digitalocean_volume_attachment" "eth_node_data" {
+#  count       = "${var.eth_node_count}"
+#  droplet_id  = "${digitalocean_droplet.eth_node[${format("%02d", count.index + 1)}].id}"
+#  volume_id   = "${digitalocean_volume.eth_node_data[${format("%02d", count.index + 1)}].id}"
+#}
 
 ## Creating Consul Nodes
 #resource "digitalocean_droplet" "consul_node" {
