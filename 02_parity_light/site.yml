@@ -1,0 +1,13 @@
+---
+# Ansible playbook to call the roles required to deploy our Ethereum stack
+
+- hosts: parity_light
+  become: True
+  become_user: root
+  tasks:
+    - import_role:
+        role: parity
+      vars:
+        parity_sync_mode: light
+      tags: role-parity
+

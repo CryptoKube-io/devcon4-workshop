@@ -75,13 +75,16 @@ This Terraform config is very basic. It checks Docker Hub for the latest stable 
 
 **Introduces:** ansible, parity, Eth reserved peers
 
+### Terraform Config
+Same as geth, but substitute in parity Docker image.
+
 ### Docker Container
-- Image: [ethereum/client-go](https://hub.docker.com/r/ethereum/client-go/)
-- Name: `devcon4-geth_light`
+- Image: [parity/parity](https://hub.docker.com/r/parity/parity/)
+- Name: `devcon4-parity_light`
 - Command (params):
-  - `--syncmode light`
-  - `--rpc --rpcaddr 127.0.0.1 --rpcport 8545`
-  - `--ws --wsaddr 127.0.0.1 --wsport 8546`
+  - TODO `light`
+  - `--jsonrpc-interface 127.0.0.1`
+  - TODO `ws`
 - Ports (proto int:ext ip - name)
   - TCP 8545:8545 127.0.0.1 - HTTP RPC
   - TCP 8546:8546 127.0.0.1 - HTTP WS
@@ -89,7 +92,32 @@ This Terraform config is very basic. It checks Docker Hub for the latest stable 
   - UDP 30301:30301 0.0.0.0 - node discovery
 
 ### Ansible Playbook
+Uses `terraform-inventory` for automated inventory. Applies Parity configuration via config.toml
 
+### Steps
+
+    ansible-galaxy install -r requirements.yml
+    cd 02_parity_light
+
+    terraform init
+    terraform plan
+    terraform apply
+    terraform show
+    
+    docker ps
+    docker logs devcon4-parity_light
+    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
+    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
+    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
+
+    ansible-playbook -i terraform-inventory site.yml
+
+    docker logs devcon4-parity_light
+    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
+    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
+    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
+
+    terraform destroy
 
 ---
 
