@@ -177,6 +177,36 @@ Supports both Ethereum clients (automatically, based on inventory)
 TODO
 
 
+---
+
+# External References
+
+## Automation Resources
+
+### Ansible
+- [Ansible User Guide](https://docs.ansible.com/ansible/latest/user_guide/index.html) (latest)
+- [Ansible Galaxy](https://galaxy.ansible.com/) - repository of roles
+
+### Terraform
+- [Terraform Docs](https://www.terraform.io/docs/)
+- [The Navigator's Guide to Digital Ocean](https://www.digitalocean.com/community/tutorial_series/the-navigator-s-guide-to-digitalocean)
+
+### Packer
+- [Packer Docs](https://packer.io/docs/)
+- [Community Tools: templates](https://www.packer.io/community-tools.html#templates)
+
+---
+
+## Ethereum
+- [Explaining the Genesis Block in Ethereum](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
+- [Comparison of the Different Testnets](https://ethereum.stackexchange.com/questions/27048/comparison-of-the-different-testnets) (links to testnet faucets)
+
+### Geth (go-ethereum)
+- geth wiki: [Running in Docker](https://github.com/ethereum/go-ethereum/wiki/Running-in-Docker)
+- geth wiki: [JSON-RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) reference
+
+### Parity
+- parity wiki: [Docker](https://wiki.parity.io/Docker)
 
 ---
 ---
@@ -203,9 +233,3 @@ TODO
   - [smart-contract-watch](https://github.com/Neufund/smart-contract-watch)
   - [BlockScout](https://github.com/poanetwork/blockscout) - excellent Terraform setup for AWS
 
-# External References
-- [Ansible User Guide](https://docs.ansible.com/ansible/latest/user_guide/index.html) (latest)
-- [Terraform Docs](https://www.terraform.io/docs/)
-- [The Navigator's Guide to Digital Ocean](https://www.digitalocean.com/community/tutorial_series/the-navigator-s-guide-to-digitalocean)
-- [Explaining the Genesis Block in Ethereum](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
-- [Comparison of the Different Testnets](https://ethereum.stackexchange.com/questions/27048/comparison-of-the-different-testnets) (links to testnet faucets)
