@@ -1,15 +1,54 @@
-# Architecting with Ethereum
 ***Devcon4 Workshop***
+# Architecting with Ethereum
+
+## Table of Contents
+
+- [Intro](#intro)
+- [Prerequisites](#prerequisites)
+- [Initial Setup](#initial-setup)
+  - [Local Setup](#local-setup)
+  - [Management Host](#management-host)
+- [Exercises](#exercises)
+  - [01: Geth Light Client](01_geth_light/README.md)
+  - [02: Parity Light Client](02_parity_light/README.md)
+  - [03: HAProxy](03_haproxy/README.md)
+  - [04: Ethereum Full Node](04_full_node/README.md)
+  - [05: IPFS Node](05_ipfs/README.md)
+- [Administrative Tooling](#administrative-tooling)
+  - [Docker](#docker) (containerization)
+  - [Ansible](#ansible) (configuration management)
+  - [Packer](#packer) (image builder)
+  - [Terraform](#terraform) (cloud deployment)
+  - [DigitalOcean](#digitalocean) (IaaS platform)
+- [Infrastructure Components](#infrastructure-components)
+  - [Reverse Proxy](#reverse-proxy)
+    - [HAProxy](#haproxy)
+    - [Nginx](#nginx)
+  - [Key-value Store](#kv-store) and Service Discovery
+    - [Consul](#consul)
+- [IPFS](#ipfs)
+- [Ethereum Node](#ethereum)
+  - [Node Types](#node-types)
+  - [Geth](#geth)
+  - [Parity](#parity)
+- [Ethereum Applications](#ethereum-applications)
+
+---
 
 ## Intro
-TODO :)
+
+Welcome to the Architecting with Ethereum workshop, presented at Devcon IV in Prague on October 30, 2018.
+
+We begin by introducing the adminstrative tooling we will use to manage our Ethereum application stack, as well as the major components of the stack. Then we conduct a series of exercises to demonstrate the concepts in realistic use cases. Each exercise builds on previous exercises, and each aims to introduce one major administrative concept and one major P2P crypto node concept.
+
+It is possible to run the exercises locally, although it is recommended to use the provided management host image for greatest environment consistency.
 
 ---
 
 ## Prerequisites
-- Digital Ocean account w/SSH & API keys
-- SSH client & web browser
-- Familiarity with Linux & Ethereum
+- Experience: Familiarity with Ethereum and remote Linux administration
+- Software: SSH client & web browser
+- Assets: Digital Ocean account w/SSH & API keys
 
 ---
 
@@ -31,205 +70,148 @@ It comes preconfigured with the following components:
 
 ---
 
-## Excercise 01: Geth Light Client
-
-**Introduces:** terraform, docker, geth, Eth light client
-
-Our first task is to use Terraform and Ansible to deploy a light client in a Docker container. The primary goal is to introduce the tools with minimal chance for complications (avoiding full nodes and cloud providers). In addition, this light client will be used to interact with more advanced systems in later exercises.
-
-### Terraform Config
-This Terraform config is very basic. It checks Docker Hub for the latest stable geth image, downloads it, and creates a container from it.
-
-### Docker Container
-- Image: [ethereum/client-go](https://hub.docker.com/r/ethereum/client-go/)
-- Name: `devcon4-geth_light`
-- Command (params):
-  - `--syncmode light`
-  - `--rpc --rpcaddr 127.0.0.1 --rpcport 8545`
-  - `--ws --wsaddr 127.0.0.1 --wsport 8546`
-- Ports (proto int:ext ip - name)
-  - TCP 8545:8545 127.0.0.1 - HTTP RPC
-  - TCP 8546:8546 127.0.0.1 - HTTP WS
-  - TCP 30303:30303 0.0.0.0 - P2P
-  - UDP 30301:30301 0.0.0.0 - node discovery
-
-### Steps
-
-    cd 01_geth_light
-    terraform init
-    terraform plan
-    terraform apply
-    terraform show
-    
-    docker ps
-    docker logs devcon4-geth_light
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
-
-    terraform destroy
+## Exercises
+- [Exercise 01: Geth Light Node](01_geth_light/README.md)
+- [Exercise 02: Parity Light Node](02_parity_light/README.md)
+- [Exercise 03: HAProxy](03_haproxy/README.md)
+- [Exercise 04: Ethereum Full Node](04_full_node/README.md)
+- [Exercise 05: IPFS Node](05_ipfs/README.md)
 
 ---
 
-## Exercise 02: Parity Light Client
+## Administrative Tooling
 
-**Introduces:** ansible, parity, Eth reserved peers
+### Docker
+*Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
 
-### Terraform Config
-Same as geth, but substitute in parity Docker image.
-
-### Docker Container
-- Image: [parity/parity](https://hub.docker.com/r/parity/parity/)
-- Name: `devcon4-parity_light`
-- Command (params):
-  - TODO `light`
-  - `--jsonrpc-interface 127.0.0.1`
-  - TODO `ws`
-- Ports (proto int:ext ip - name)
-  - TCP 8545:8545 127.0.0.1 - HTTP RPC
-  - TCP 8546:8546 127.0.0.1 - HTTP WS
-  - TCP 30303:30303 0.0.0.0 - P2P
-  - UDP 30301:30301 0.0.0.0 - node discovery
-
-### Ansible Playbook
-Uses `terraform-inventory` for automated inventory. Applies Parity configuration via config.toml
-
-### Steps
-
-    ansible-galaxy install -r requirements.yml
-    cd 02_parity_light
-
-    terraform init
-
-    terraform plan
-    terraform apply
-    terraform show
-    
-    docker ps
-    docker logs devcon4-parity_light
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
-
-    ansible-playbook -i terraform-inventory site.yml
-
-    docker logs devcon4-parity_light
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
-
-    terraform destroy
-
----
-
-## Excercise 03: HAProxy
-
-**Introduces:** haproxy, load-balancing, high-availability, terraform modules
-
-### Terraform Config
-Edit `main.tf` to use the geth or parity module, and verify the correct resources are referenced in the haproxy section.
-
-### Docker Containers
-#### Ethereum
-- [geth](https://hub.docker.com/r/ethereum/client-go/) or [parity](https://hub.docker.com/r/parity/parity/) (your choice from previous exercise)
-#### HAProxy
-- Image: [haproxy](https://hub.docker.com/_/haproxy/)
-- Name: `devcon4-haproxy`
-- Command (params):
-  - TODO
-- Ports (proto int:ext ip - name)
-  - TCP 8545:8545 127.0.0.1 - HTTP RPC
-
-### Ansible Playbook
-Supports both Ethereum clients (automatically, based on inventory)
-
-### Steps
-
-    ansible-galaxy install -r requirements.yml
-    cd 03_haproxy
-
-    terraform init
-
-    terraform plan
-    terraform apply
-    terraform show
-    
-    ansible-playbook -i terraform-inventory site.yml
-
-    docker ps
-    docker logs devcon4-parity_light-01
-    docker logs devcon4-parity_light-02
-    docker logs devcon4-haproxy
-
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
-
-    terraform destroy
-
----
-
-## Exercise 04: Parity Full Node
-
-**Introduces:** digitalocean (droplet/volume/firewall), data volumes, Eth full node
-
-### Terraform Config
-TODO
-
-
----
-
-# External References
-
-## Automation Resources
+- [Docker Reference documentation](https://docs.docker.com/reference/)
+- [Docker Community Edition](https://docs.docker.com/install/)
+- [Docker Hub](https://hub.docker.com/)
 
 ### Ansible
+*Ansible is an open source software that automates software provisioning, configuration management, and application deployment.* -wikipedia
+
 - [Ansible User Guide](https://docs.ansible.com/ansible/latest/user_guide/index.html) (latest)
 - [Ansible Galaxy](https://galaxy.ansible.com/) - repository of roles
 
-### Terraform
-- [Terraform Docs](https://www.terraform.io/docs/)
-- [The Navigator's Guide to Digital Ocean](https://www.digitalocean.com/community/tutorial_series/the-navigator-s-guide-to-digitalocean)
+*External Training*
+- RedHat DO007 [Ansible Essentials: Simplicity in Automation Technical Overview](https://www.redhat.com/en/services/training/do007-ansible-essentials-simplicity-automation-technical-overview)
+- Linux Academy: [Ansible Quick Start](https://linuxacademy.com/devops/training/course/name/ansible-quick-start)
+- [How To Test Ansible Roles with Molecule on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-test-ansible-roles-with-molecule-on-ubuntu-18-04)
+- [How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)
+
 
 ### Packer
+*HashiCorp Packer is a tool for building images for cloud platforms, virtual machines, containers and more from a single source configuration.*
 - [Packer Docs](https://packer.io/docs/)
 - [Community Tools: templates](https://www.packer.io/community-tools.html#templates)
 
----
+### Terraform
+*HashiCorp Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.*
+- [Terraform Docs](https://www.terraform.io/docs/)
+  - [Digitalocean provider](https://www.terraform.io/docs/providers/do/index.html)
 
-## Ethereum
-- [Explaining the Genesis Block in Ethereum](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
-- [Comparison of the Different Testnets](https://ethereum.stackexchange.com/questions/27048/comparison-of-the-different-testnets) (links to testnet faucets)
-
-### Geth (go-ethereum)
-- geth wiki: [Running in Docker](https://github.com/ethereum/go-ethereum/wiki/Running-in-Docker)
-- geth wiki: [JSON-RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) reference
-
-### Parity
-- parity wiki: [Docker](https://wiki.parity.io/Docker)
+### DigitalOcean
+*DigitalOcean is an Infrastructure as a Service (IaaS) platform that aims to be "The simplest cloud platform for developers & teams."*
+- [DigitalOcean Product Documenation](https://www.digitalocean.com/docs/)
+- [The Navigator's Guide to DigitalOcean](https://www.digitalocean.com/community/tutorial_series/the-navigator-s-guide-to-digitalocean)
 
 ---
----
-
-# OLD STUFF
 
 ## Infrastructure Components
-- HAProxy w/LetsEncrypt
+
+### Reverse Proxy
+
+**Load balancing**
+*Load balancing improves the distribution of workloads across multiple computing resources, such as computers, a computer cluster, network links, central processing units, or disk drives.* -wikipedia
+
+**High availability**
+*High availability is a characteristic of a system, which aims to ensure an agreed level of operational performance, usually uptime, for a higher than normal period.* -wikipedia
+
+- DigitalOcean tutorials
+  - [What is Load Balancing?](https://www.digitalocean.com/community/tutorials/what-is-load-balancing)
+  - [What is High Availability?](https://www.digitalocean.com/community/tutorials/what-is-high-availability)
+
+#### HAProxy
+- [HAProxy Community Edition](http://www.haproxy.org/)
+- [HAProxy 1.8 Docs](http://www.haproxy.org/#doc1.8)
+
+#### Nginx
+- [NGINX Admin Guide](https://docs.nginx.com/nginx/admin-guide/)
+- Nginx glossary: [What is Load Balancing? How Load Balancers Work](https://www.nginx.com/resources/glossary/load-balancing/)
+
+### Service Discovery & KV Store
+
+#### Consul
+- [Consul Docs](https://www.consul.io/docs/)
 - Consul service discovery (using [brianshumate/ansible-consul](https://github.com/brianshumate/ansible-consul) role)
-- Nginx web server
-- Ethereum nodes
-  - geth
-    - full
-    - bootstrap
-    - light
-  - parity
-    - full
-    - bootstrap
-    - light
-- Ethereum Applications
+
+---
+
+## Interplanetary Filesystem (IPFS)
+- [IPFS Docs](https://docs.ipfs.io/)
+- Docker Hub: [ipfs/go-ipfs](https://hub.docker.com/r/ipfs/go-ipfs/) ([github](https://github.com/ipfs/go-ipfs))
+- IPFS blog: [Run IPFS in a Docker Container](https://ipfs.io/blog/1-run-ipfs-on-docker/)
+
+---
+
+## Ethereum 
+- [Ethereum Wiki](https://github.com/ethereum/wiki/wiki)
+- [Ethereum Yellow Paper](https://github.com/ethereum/yellowpaper)
+- Book: [Mastering Ethereum](https://github.com/ethereumbook/ethereumbook) by Andreas M. Antonopoulos, Gavin Wood
+
+### Ports
+Service | Protocol | Port | Interface
+--------|----------|------|----------
+HTTP RPC | TCP | 8545 | private
+HTTP WS | TCP | 8546 | private
+P2P | TCP | 30303 | public
+Node discovery | UDP | 30301 | public
+
+### Networks
+Here are the most commonly-used networks:
+
+Net ID | Chain ID | Description | Consensus | Client(s)
+-------|----------|-------------|-----------|----------
+1 | 1 | Ethereum mainnet | PoW | All
+3 | 1 | Ropsten testnet | PoW | All
+4 | 1 | Rinkeby tesnet | PoA | Geth
+42 | 1 | Kovan testnet | PoA | Parity
+1 | 61 | Ethereum Classic mainnet | PoW | All
+2 | 1 | Ethereum Classic testnet | PoW | All
+
+**Links**
+- EIP-155: [List of Chain ID's](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md#list-of-chain-ids)
+- [Comparison of the Different Testnets](https://ethereum.stackexchange.com/questions/27048/comparison-of-the-different-testnets) (links to testnet faucets)
+- [Explaining the Genesis Block in Ethereum](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/) (important to understand for private networks, which are not addressed further in this workshop)
+
+### Node Types
+Name | Headers | Transactions | State | Notes
+-----|---------|--------------|-------|------
+Light client    | All | On-demand | On-demand | suitable for mobile & embedded applications
+Full node       | All | All       | Pruned    | suitable for most server applications
+Archive node    | All | All       | All       | necessary only for deep block exploration
+Bootstrap node  | All | All       | Pruned    | required for private blockchains
+
+### Geth
+- Docker Hub: [ethereum/client-go](https://hub.docker.com/r/ethereum/client-go/)
+- Geth wiki
+  - [Command Line Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
+  - [Connecting to the network](https://github.com/ethereum/go-ethereum/wiki/Connecting-to-the-network) (geth does not work well with a config file, so use command-line options for everything)
+  - [Running in Docker](https://github.com/ethereum/go-ethereum/wiki/Running-in-Docker)
+  - [JSON-RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) reference
+
+### Parity
+- Docker Hub: [parity/parity](https://hub.docker.com/r/parity/parity)
+- Parity Wiki: [Docker](https://wiki.parity.io/Docker)
+
+---
+
+## Ethereum Applications
   - [Ethereum Network Stats](https://github.com/cubedro/eth-netstats)
     - uses [Ethereum Network Intelligence API](https://github.com/cubedro/eth-net-intelligence-api)
   - [Etherchain light](https://github.com/gobitfly/etherchain-light)
   - [smart-contract-watch](https://github.com/Neufund/smart-contract-watch)
   - [BlockScout](https://github.com/poanetwork/blockscout) - excellent Terraform setup for AWS
 
+---
