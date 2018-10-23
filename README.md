@@ -39,7 +39,15 @@
 
 Welcome to the Architecting with Ethereum workshop, presented at Devcon IV in Prague on October 30, 2018.
 
-We begin by introducing the adminstrative tooling we will use to manage our Ethereum application stack, as well as the major components of the stack. Then we conduct a series of exercises to demonstrate the concepts in realistic use cases. Each exercise builds on previous exercises, and each aims to introduce one major administrative concept and one major P2P crypto node concept.
+### CryptoKube.io
+CryptoKube is an open source software stack for hosting peer-to-peer cryptographic applications. It currently consists of many separate modules (primarily Ansible, Terraform, and Docker). The ultimate goal is to provide a turnkey Kubernetes implementation (still under development).
+
+Visit [CryptoKube.io](https://cryptokube.io) for the latest details.
+
+### Workshop
+In this workshop we build a basic Ethereum application stack using components from the CryptoKube public repos.
+
+We begin by introducing the adminstrative tooling and the major components of the stack. Then we conduct a series of exercises to demonstrate the concepts in realistic use cases. Each exercise builds on previous exercises, and each aims to introduce one major administrative concept and one major P2P crypto node concept.
 
 It is possible to run the exercises locally, although it is recommended to use the provided management host image for greatest environment consistency.
 
