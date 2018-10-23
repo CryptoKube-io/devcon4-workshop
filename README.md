@@ -106,7 +106,7 @@ Major Concepts:
 - [Modules](https://www.terraform.io/docs/modules/index.html): self-contained packages configurations that are managed as a group, used to create reusable components
 
 **Basic Commands**
-To view a list of the available commands at any time, just run `terraform` with no arguments. For details about a command, run `terraform <command> -h`
+To view a list of available commands, run `terraform` with no arguments. For details about a command, run `terraform <command> -h`
 - `terraform init` - Initialize a new or existing Terraform configuration (install plugins, perform minimal validation)
 - `terraform plan` - Generate and show an execution plan
 - `terraform show` - Inspect Terraform state or plan
@@ -134,7 +134,20 @@ To view a list of the available commands at any time, just run `terraform` with 
 ### Docker
 *Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
 
+**Basic Commands**
+To view a list of available commands, run `docker` with no arguemnts. For details about a command, run `docker <command> -h`
+- Containers:
+  - `docker ps` - List containers
+  - `docker logs` - Fetch the logs of a container
+  - `docker kill` - Kill one or more running containers
+  - `docker rm` - Remove one or more containers
+- Images:
+  - `docker images` - List images
+  - `docker rmi` - Remove one or more images
+
+**Links**
 - [Docker Reference documentation](https://docs.docker.com/reference/)
+  - [CLI reference](https://docs.docker.com/engine/reference/commandline/cli)
 - [Docker Community Edition](https://docs.docker.com/install/)
 - [Docker Hub](https://hub.docker.com/)
 
