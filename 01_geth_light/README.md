@@ -4,7 +4,7 @@
 
 **Introduces:** terraform, docker, geth, Eth light client
 
-Our first task is to use Terraform and Ansible to deploy a light client in a Docker container. The primary goal is to introduce the tools with minimal chance for complications (avoiding full nodes and cloud providers). In addition, this light client will be used to interact with more advanced systems in later exercises.
+Our first task is to use Terraform to deploy a light client in a Docker container. The primary goal is to introduce the tools with minimal chance for complications (avoiding full nodes and cloud providers). In addition, this light client will be used to interact with more advanced systems in later exercises.
 
 ### Terraform Config
 This Terraform config is very basic. It checks Docker Hub for the latest stable geth image, downloads it, and creates a container from it.
@@ -24,18 +24,35 @@ This Terraform config is very basic. It checks Docker Hub for the latest stable 
 
 ### Steps
 
+1. Enter the exercise directory:
+
     cd 01_geth_light
+
+2. Initialize the Terraform configuration, and view the execution plan:
+
     terraform init
     terraform plan
+
+3. Apply the Terraform config to build the infrastructure, then show the results:
+
     terraform apply
     terraform show
-    
+   
+4. View running Docker containers, and show logs from our Geth light client:
+ 
     docker ps
     docker logs devcon4-geth_light
+
+5. Query the Geth node using API calls to the RPC interface:
+
     curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
     curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
     curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
 
+6. Clean up the infrastructure by deleting everything:
+
     terraform destroy
 
 ---
+
+Continue to [exercise 02](../02_parity_light/README.md)
