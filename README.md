@@ -88,13 +88,35 @@ It comes preconfigured with the following components:
 ---
 
 ## Administrative Tooling
+We'll primarily be using Terraform, Ansible, terraform-inventory, Docker, and Git.
 
-### Docker
-*Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
 
-- [Docker Reference documentation](https://docs.docker.com/reference/)
-- [Docker Community Edition](https://docs.docker.com/install/)
-- [Docker Hub](https://hub.docker.com/)
+### Terraform
+*HashiCorp Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.*
+
+Overview:
+- Easily describe your infrastructure as code
+- Version control your resources, allowing rollback to previous state
+- Uses declarative syntax ([HCL](https://github.com/hashicorp/hcl)), fully JSON compatible but extended for easier human consumption
+
+Major Concepts:
+- [Configuration](https://www.terraform.io/docs/configuration/index.html): text files with `.tf` extension, describes infrastructure and sets variables
+- [State](https://www.terraform.io/docs/state/index.html): `terraform.tfstate`, maps real world resources to your configuration, and keeps track of metadata
+- [Providers](https://www.terraform.io/docs/providers/index.html): responsible for understanding API interactions and exposing resources, example: [DigitalOcean](https://www.terraform.io/docs/providers/docker/index.html), [Docker](https://www.terraform.io/docs/providers/docker/index.html), [Consul](https://www.terraform.io/docs/providers/consul/index.html)
+- [Modules](https://www.terraform.io/docs/modules/index.html): self-contained packages configurations that are managed as a group, used to create reusable components
+
+**Basic Commands**
+To view a list of available commands, run `terraform` with no arguments. For details about a command, run `terraform <command> -h`
+- `terraform init` - Initialize a new or existing Terraform configuration (install plugins, perform minimal validation)
+- `terraform plan` - Generate and show an execution plan
+- `terraform show` - Inspect Terraform state or plan
+- `terraform apply` - Builds or changes infrastructure
+- `terraform destroy` - Destroy Terraform-managed infrastructure
+
+**Links**
+- [Terraform Docs](https://www.terraform.io/docs/)
+  - [Digitalocean provider](https://www.terraform.io/docs/providers/do/index.html)
+
 
 ### Ansible
 *Ansible is an open source software that automates software provisioning, configuration management, and application deployment.* -wikipedia
@@ -109,20 +131,38 @@ It comes preconfigured with the following components:
 - [How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)
 
 
+### Docker
+*Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
+
+**Basic Commands**
+To view a list of available commands, run `docker` with no arguemnts. For details about a command, run `docker <command> -h`
+- Containers:
+  - `docker ps` - List containers
+  - `docker logs` - Fetch the logs of a container
+  - `docker kill` - Kill one or more running containers
+  - `docker rm` - Remove one or more containers
+- Images:
+  - `docker images` - List images
+  - `docker rmi` - Remove one or more images
+
+**Links**
+- [Docker Reference documentation](https://docs.docker.com/reference/)
+  - [CLI reference](https://docs.docker.com/engine/reference/commandline/cli)
+- [Docker Community Edition](https://docs.docker.com/install/)
+- [Docker Hub](https://hub.docker.com/)
+
+
 ### Packer
 *HashiCorp Packer is a tool for building images for cloud platforms, virtual machines, containers and more from a single source configuration.*
 - [Packer Docs](https://packer.io/docs/)
 - [Community Tools: templates](https://www.packer.io/community-tools.html#templates)
 
-### Terraform
-*HashiCorp Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.*
-- [Terraform Docs](https://www.terraform.io/docs/)
-  - [Digitalocean provider](https://www.terraform.io/docs/providers/do/index.html)
 
 ### DigitalOcean
 *DigitalOcean is an Infrastructure as a Service (IaaS) platform that aims to be "The simplest cloud platform for developers & teams."*
 - [DigitalOcean Product Documenation](https://www.digitalocean.com/docs/)
 - [The Navigator's Guide to DigitalOcean](https://www.digitalocean.com/community/tutorial_series/the-navigator-s-guide-to-digitalocean)
+- [Use Terraform with DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-use-terraform-with-digitalocean)
 
 ---
 
@@ -139,6 +179,7 @@ It comes preconfigured with the following components:
 - DigitalOcean tutorials
   - [What is Load Balancing?](https://www.digitalocean.com/community/tutorials/what-is-load-balancing)
   - [What is High Availability?](https://www.digitalocean.com/community/tutorials/what-is-high-availability)
+  - [Navigator's Guide: High Availability](https://www.digitalocean.com/community/tutorials/navigator-s-guide-high-availability)
 
 #### HAProxy
 - [HAProxy Community Edition](http://www.haproxy.org/)
