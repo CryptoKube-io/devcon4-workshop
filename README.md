@@ -88,31 +88,8 @@ It comes preconfigured with the following components:
 ---
 
 ## Administrative Tooling
-We'll primarily be using Docker, Terraform, Ansible, terraform-inventory, and Git.
+We'll primarily be using Terraform, Ansible, terraform-inventory, Docker, and Git.
 
-### Docker
-*Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
-
-- [Docker Reference documentation](https://docs.docker.com/reference/)
-- [Docker Community Edition](https://docs.docker.com/install/)
-- [Docker Hub](https://hub.docker.com/)
-
-### Ansible
-*Ansible is an open source software that automates software provisioning, configuration management, and application deployment.* -wikipedia
-
-- [Ansible User Guide](https://docs.ansible.com/ansible/latest/user_guide/index.html) (latest)
-- [Ansible Galaxy](https://galaxy.ansible.com/) - repository of roles
-
-*External Training*
-- RedHat DO007 [Ansible Essentials: Simplicity in Automation Technical Overview](https://www.redhat.com/en/services/training/do007-ansible-essentials-simplicity-automation-technical-overview)
-- Linux Academy: [Ansible Quick Start](https://linuxacademy.com/devops/training/course/name/ansible-quick-start)
-- [How To Test Ansible Roles with Molecule on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-test-ansible-roles-with-molecule-on-ubuntu-18-04)
-- [How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)
-
-### Packer
-*HashiCorp Packer is a tool for building images for cloud platforms, virtual machines, containers and more from a single source configuration.*
-- [Packer Docs](https://packer.io/docs/)
-- [Community Tools: templates](https://www.packer.io/community-tools.html#templates)
 
 ### Terraform
 *HashiCorp Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.*
@@ -139,6 +116,34 @@ To view a list of the available commands at any time, just run `terraform` with 
 **Links**
 - [Terraform Docs](https://www.terraform.io/docs/)
   - [Digitalocean provider](https://www.terraform.io/docs/providers/do/index.html)
+
+
+### Ansible
+*Ansible is an open source software that automates software provisioning, configuration management, and application deployment.* -wikipedia
+
+- [Ansible User Guide](https://docs.ansible.com/ansible/latest/user_guide/index.html) (latest)
+- [Ansible Galaxy](https://galaxy.ansible.com/) - repository of roles
+
+*External Training*
+- RedHat DO007 [Ansible Essentials: Simplicity in Automation Technical Overview](https://www.redhat.com/en/services/training/do007-ansible-essentials-simplicity-automation-technical-overview)
+- Linux Academy: [Ansible Quick Start](https://linuxacademy.com/devops/training/course/name/ansible-quick-start)
+- [How To Test Ansible Roles with Molecule on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-test-ansible-roles-with-molecule-on-ubuntu-18-04)
+- [How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)
+
+
+### Docker
+*Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
+
+- [Docker Reference documentation](https://docs.docker.com/reference/)
+- [Docker Community Edition](https://docs.docker.com/install/)
+- [Docker Hub](https://hub.docker.com/)
+
+
+### Packer
+*HashiCorp Packer is a tool for building images for cloud platforms, virtual machines, containers and more from a single source configuration.*
+- [Packer Docs](https://packer.io/docs/)
+- [Community Tools: templates](https://www.packer.io/community-tools.html#templates)
+
 
 ### DigitalOcean
 *DigitalOcean is an Infrastructure as a Service (IaaS) platform that aims to be "The simplest cloud platform for developers & teams."*
