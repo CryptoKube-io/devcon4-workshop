@@ -9,10 +9,11 @@
   - [Local Setup](#local-setup)
   - [Management Host](#management-host)
 - [Exercises](#exercises)
-  - [01: Geth Light Client](01_geth_light/README.md)
-  - [02: Parity Light Client](02_parity_light/README.md)
-  - [03: HAProxy](03_haproxy/README.md)
-  - [04: Ethereum Full Node](04_full_node/README.md)
+  - [00: Docker Light Client](00_docker_light_client/README.md)
+  - [01: Light Client](01_light_client/README.md) (cloud)
+  - [02: Full Node](02_full_node/README.md)
+  - [03: HAProxy](03_proxy/README.md)
+  - [04: Ethereum Application Server](04_ethereum_app/README.md)
   - [05: IPFS Node](05_ipfs/README.md)
 - [Administrative Tooling](#administrative-tooling)
   - [Docker](#docker) (containerization)
@@ -50,6 +51,10 @@ In this workshop we build a basic Ethereum application stack using components fr
 We begin by introducing the adminstrative tooling and the major components of the stack. Then we conduct a series of exercises to demonstrate the concepts in realistic use cases. Each exercise builds on previous exercises, and each aims to introduce one major administrative concept and one major P2P crypto node concept.
 
 It is possible to run the exercises locally, although it is recommended to use the provided management host image for greatest environment consistency.
+
+### Inspiration
+"It's up to us. We cannot take for granted that the future will be better, and that means we need to work to create it today."
+- *Peter Thiel, "Zero to One"*
 
 ---
 
@@ -251,12 +256,17 @@ Bootstrap node  | All | All       | Pruned    | required for private blockchains
   - [JSON-RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) reference
 
 ### Parity
+- [Parity Config Generator](https://github.com/paritytech/parity-config-generator)
 - Docker Hub: [parity/parity](https://hub.docker.com/r/parity/parity)
-- Parity Wiki: [Docker](https://wiki.parity.io/Docker)
+- [Parity Wiki](https://wiki.parity.io/): 
+  - [Configuration](https://wiki.parity.io/Configuring-Parity-Ethereum)
+  - [Docker](https://wiki.parity.io/Docker)
 
 ---
 
 ## Ethereum Applications
+  - [Parity Skeleton DApp](https://github.com/paritytech/skeleton)
+    - [Parity DApp tutorial](https://wiki.parity.io/Tutorial-Part-1.html)
   - [Ethereum Network Stats](https://github.com/cubedro/eth-netstats)
     - uses [Ethereum Network Intelligence API](https://github.com/cubedro/eth-net-intelligence-api)
   - [Etherchain light](https://github.com/gobitfly/etherchain-light)

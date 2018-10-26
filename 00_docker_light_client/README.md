@@ -1,10 +1,10 @@
 ***Devcon4 Workshop***
 # Architecting with Ethereum
-## Excercise 01: Geth Light Client
+## Excercise 01: Ethereum light client
 
-**Introduces:** terraform, docker, geth, Eth light client
+**Introduces:** terraform, docker, geth, light client
 
-Our first task is to use Terraform to deploy a light client in a Docker container. The primary goal is to introduce the tools with minimal chance for complications (avoiding full nodes and cloud providers). In addition, this light client will be used to interact with more advanced systems in later exercises.
+Our first task is to use Terraform to deploy a light client in a Docker container. The primary goal is to introduce the tools with minimal chance for complications (avoiding full nodes and cloud providers). Geth is best configured using only command-line options (rather than a config file), so we can accomplish this using just Terraform and Docker.
 
 ### Terraform Config
 This Terraform config is very basic. It checks Docker Hub for the latest stable geth image, downloads it, and creates a container from it.

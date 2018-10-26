@@ -6,11 +6,8 @@
   become_user: root
   vars:
     data_vol: /dev/sda
-    data_dir: /opt/geth/.ethereum
+    data_dir: /opt/parity
   tasks:
-    - import_role:
-        role: ubuntu
-      tags: role-ubuntu
 
     - name: Format data volume
       filesystem:
@@ -23,3 +20,11 @@
         src: '{{data_vol}}'
         fstype: ext4
         state: mounted
+
+    - import_role:
+        role: ubuntu
+      tags: role-ubuntu
+
+    - import_role:
+        role: parity
+      tags: role-parity

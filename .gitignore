@@ -9,3 +9,5 @@ site.retry
 roles/*
 *.pem
 crash.log
+*.swp
+*/vault

@@ -9,5 +9,17 @@
         role: parity
       vars:
         parity_sync_mode: light
+        parity_chain: kovan
       tags: role-parity
 
+#- hosts: parity_full
+#  become: True
+#  become_user: root
+#  tasks:
+#    - import_role:
+#        role: parity
+#      vars:
+#        parity_sync_mode: active
+#        parity_chain: kovan
+#      tags: role-parity
+#

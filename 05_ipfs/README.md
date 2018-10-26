@@ -2,7 +2,7 @@
 # Architecting with Ethereum
 ## Exercise 05: IPFS Node
 
-**Introduces:** IPFS
+**Introduces:** ipfs
 
 ### Terraform Config
 TODO

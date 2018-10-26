@@ -1,8 +1,8 @@
 ***Devcon4 Workshop***
 # Architecting with Ethereum
-## Exercise 03: HAProxy
+## Exercise 03: Reverse proxy
 
-**Introduces:** haproxy, load-balancing, high-availability, terraform modules
+**Introduces:** ansible, haproxy, terraform modules
 
 ### Terraform Config
 Edit `main.tf` to use the geth or parity module, and verify the correct resources are referenced in the haproxy section.
@@ -23,15 +23,26 @@ Supports both Ethereum clients (automatically, based on inventory)
 
 ### Steps
 
+1. Install Ansible roles from Galaxy (in workshop root directory):
+
     ansible-galaxy install -r requirements.yml
+
+2. Enter the exercise directory:
+
     cd 03_haproxy
 
-    terraform init
+3. Initialize the Terraform configuration, and view the execution plan:
 
+    terraform init
     terraform plan
+
+4. Apply the Terraform config to build the infrastructure, then show the results:
+
     terraform apply
     terraform show
     
+6. Run the Ansible playbook to update Parity's configuration:
+
     ansible-playbook -i terraform-inventory site.yml
 
     docker ps
