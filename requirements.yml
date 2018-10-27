@@ -16,6 +16,9 @@
 - src: https://github.com/CryptoKube-io/ansible-haproxy
   name: haproxy
 
+- src: https://github.com/CryptoKube-io/ansible-nodejs
+  name: nodejs
+
 #- src: https://github.com/CryptoKube-io/ansible-nginx
 #  name: nginx
 #

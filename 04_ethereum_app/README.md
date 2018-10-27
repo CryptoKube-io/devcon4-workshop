@@ -7,5 +7,11 @@
 ### Terraform Config
 TODO
 
+### Steps
+- `terraform init`
+- `terraform apply`
+- `sleep 15`
+- `ansible-playbook -i terraform-inventory site.yml`
+
 ### Improvements
 - Reserved peers

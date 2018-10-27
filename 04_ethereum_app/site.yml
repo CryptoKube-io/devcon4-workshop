@@ -1,0 +1,55 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Wait for Python to become available
+      raw: while [ ! -e /usr/bin/python ]; do echo 'waiting for python (5s)'; sleep 5; done; echo 'python available'
+
+- hosts: all
+  gather_facts: yes
+  become: True
+  tasks:
+    - import_role:
+        role: ubuntu
+      tags: role-ubuntu
+
+- hosts: haproxy
+  become: True
+  tasks:
+    - import_role:
+        role: haproxy
+      vars:
+        frontend_port: 8545
+        backend_port: 80
+        backend_group: parity_node
+      tags: role-haproxy
+
+- hosts: parity_node
+  become: True
+  vars:
+    data_vol: /dev/sda
+    data_dir: /opt/parity
+  tasks:
+    - name: Mount data volume
+      mount:
+        path: '{{data_dir}}'
+        src: '{{data_vol}}'
+        fstype: ext4
+        state: mounted
+      tags: datavol
+
+    - import_role:
+        role: parity
+      tags: role-parity
+
+- hosts: app_node
+  become: True
+  tasks:
+    - import_role:
+        role: nodejs
+      tags: role-nodejs
+
+#    - import_role:
+#        role: ethstats
+#      tags: role-ethstats
+
