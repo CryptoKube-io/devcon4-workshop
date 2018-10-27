@@ -1,18 +1,14 @@
 ---
 # Ansible playbook to call the roles required to deploy our Ethereum stack
 
-- hosts: eth_node
+- hosts: parity_full
   become: True
   become_user: root
   vars:
     data_vol: /dev/sda
     data_dir: /opt/parity
-  tasks:
 
-    - name: Format data volume
-      filesystem:
-        dev: '{{data_vol}}'
-        fstype: ext4
+  tasks:
 
     - name: Mount data volume
       mount:
@@ -20,11 +16,16 @@
         src: '{{data_vol}}'
         fstype: ext4
         state: mounted
+      tags: datavol
 
     - import_role:
         role: ubuntu
       tags: role-ubuntu
-
+  
     - import_role:
         role: parity
+      vars:
+        parity_sync_mode: active
+        parity_chain: kovan
+        parity_datadir: /data
       tags: role-parity
