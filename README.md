@@ -121,6 +121,7 @@ To view a list of available commands, run `terraform` with no arguments. For det
 **Links**
 - [Terraform Docs](https://www.terraform.io/docs/)
   - [Digitalocean provider](https://www.terraform.io/docs/providers/do/index.html)
+- [CloudInit Docs](https://cloudinit.readthedocs.io/en/latest/)
 
 
 ### Ansible
