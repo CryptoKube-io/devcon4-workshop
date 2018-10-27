@@ -1,0 +1,26 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: True
+  tasks:
+    - import_role:
+        role: ubuntu
+      tags: role-ubuntu
+
+- hosts: haproxy
+  become: True
+  tasks:
+    - import_role:
+        role: haproxy
+      vars:
+        frontend_port: 8545
+        backend_port: 80
+      tags: role-haproxy
+
+#- hosts: backend_node
+#  become: True
+#  tasks:
+#    - import_role:
+#        role: nginx
+#      tags: role-nginx
+
