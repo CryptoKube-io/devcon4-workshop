@@ -1,0 +1,25 @@
+#cloud-config
+bootcmd:
+  - umount /dev/sda
+  - sed 'd/sda/' /etc/fstab
+  - mkdir -p /data
+  - mount -o discard,defaults /dev/sda /data
+  - echo /dev/sda /data ext4 defaults,nofail,discard 0 2 | sudo tee -a /etc/fstab
+
+#mount:
+#  - [ '/dev/sda', '/data', 'ext4', 'defaults,nofail,discard', '0', '2' ]
+
+users:
+  - name: ${ansible_user}
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ${public_key}
+
+packages:
+  - curl
+  - python
+  - python-pip
+  - python-requests
+  - python-dev
+  - python-simplejson
