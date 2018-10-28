@@ -1,4 +1,6 @@
 ---
+# Ansible playbook to deploy our Ethereum application stack
+
 - hosts: all
   gather_facts: no
   tasks:

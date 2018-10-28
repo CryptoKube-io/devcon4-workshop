@@ -1,5 +1,12 @@
 ---
-# Ansible playbook to call the roles required to deploy our Ethereum stack
+# Ansible playbook to install Parity Ethereum light client
+
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Wait for Python to become available
+      raw: while [ ! -e /usr/bin/python ]; do echo 'waiting for python (5s)'; sleep 5; done; echo 'python available'
+
 
 - hosts: parity_light
   become: True
@@ -13,5 +20,6 @@
         role: parity
       vars:
         parity_sync_mode: light
+        parity_cache: 3072
         parity_chain: kovan
       tags: role-parity

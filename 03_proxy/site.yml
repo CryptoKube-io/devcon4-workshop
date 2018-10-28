@@ -1,4 +1,12 @@
 ---
+# Ansible playbook to install HAProxy
+
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: Wait for Python to become available
+      raw: while [ ! -e /usr/bin/python ]; do echo 'waiting for python (5s)'; sleep 5; done; echo 'python available'
+
 - hosts: all
   gather_facts: yes
   become: True
@@ -16,11 +24,3 @@
         frontend_port: 8545
         backend_port: 80
       tags: role-haproxy
-
-#- hosts: backend_node
-#  become: True
-#  tasks:
-#    - import_role:
-#        role: nginx
-#      tags: role-nginx
-

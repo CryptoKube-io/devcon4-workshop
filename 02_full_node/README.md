@@ -1,18 +1,18 @@
 ***Devcon4 Workshop***
 # Architecting with Ethereum
-## Exercise 01: Ethereum light client
+## Exercise 02: Ethereum full node
 
-**Introduces:** digitalocean, parity
+**Introduces:** digitalocean volume, full node
 
-Our next goal is to deploy light client to a DigitalOcean droplet. This time we will use Parity instead of Geth.
+Our next goal is to deploy a full node to a DigitalOcean droplet with a dedicated data volume.
 
 ### Terraform Config
 TODO
 
 ### DigitalOcean
 - Image: 
-- Name: `devcon4-parity_light-01`
-- Size: 2gb
+- Name: `devcon4-parity_full-01`
+- Size: 4gb
 - Firewall (allow):
   - Ingress:
     - TCP 22: allow from private net
@@ -30,13 +30,13 @@ TODO
 - Inventory: `terraform-inventory`
 - Parity:
   - network: kovan
-  - cache: 1024
+  - cache: 3072
 
 ### Steps
 
 1. Enter the exercise directory:
 ```bash
-cd 01_light_client
+cd 02_full_node
 ```
 
 2. Use the helper script to set Terraform variables:
@@ -64,7 +64,7 @@ ansible-playbook -i terraform-inventory site.yml
 
 6. Find the remote IP, SSH into the remote host, and show logs from our Parity light client:
 ```bash
-ip=$(terraform-inventory -list | jq -r .parity_light[0])
+ip=$(terraform-inventory -list | jq -r .parity_full[0])
 ssh root@$ip
 journalctl -fu parity.service
 ```
