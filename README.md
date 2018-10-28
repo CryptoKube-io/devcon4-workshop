@@ -84,11 +84,12 @@ It comes preconfigured with the following components:
 ---
 
 ## Exercises
-- [Exercise 01: Geth Light Node](01_geth_light/README.md)
-- [Exercise 02: Parity Light Node](02_parity_light/README.md)
-- [Exercise 03: HAProxy](03_haproxy/README.md)
-- [Exercise 04: Ethereum Full Node](04_full_node/README.md)
-- [Exercise 05: IPFS Node](05_ipfs/README.md)
+- [00: Docker Light Client](00_docker_light_client/README.md)
+- [01: Light Client](01_light_client/README.md) (cloud)
+- [02: Full Node](02_full_node/README.md)
+- [03: HAProxy](03_proxy/README.md)
+- [04: Ethereum Application Server](04_ethereum_app/README.md)
+- [05: IPFS Node](05_ipfs/README.md)
 
 ---
 
