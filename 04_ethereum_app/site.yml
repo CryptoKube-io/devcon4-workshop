@@ -6,6 +6,7 @@
   tasks:
     - name: Wait for Python to become available
       raw: while [ ! -e /usr/bin/python ]; do echo 'waiting for python (5s)'; sleep 5; done; echo 'python available'
+      changed_when: false
 
 - hosts: all
   gather_facts: yes
