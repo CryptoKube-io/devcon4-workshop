@@ -10,8 +10,8 @@ Our next goal is to deploy a full node to a DigitalOcean droplet with a dedicate
 TODO
 
 ### DigitalOcean
-- Image: 
-- Name: `devcon4-parity_full-01`
+- Image: Ubuntu-18-04-x64
+- Name: `devcon4-parity-full-01`
 - Size: 4gb
 - Firewall (allow):
   - Ingress:
@@ -47,7 +47,6 @@ bin/init_config
 3. Initialize the Terraform configuration, get modules and view the execution plan:
 ```bash
 terraform init
-terraform get
 terraform plan
 ```
 
