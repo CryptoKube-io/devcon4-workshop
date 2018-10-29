@@ -24,4 +24,5 @@
       vars:
         frontend_port: 8545
         backend_port: 80
+        backend_group: backend_node
       tags: role-haproxy

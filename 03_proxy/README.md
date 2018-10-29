@@ -2,7 +2,7 @@
 # Architecting with Ethereum
 ## Exercise 03: Reverse proxy
 
-**Introduces:** ansible, haproxy, terraform modules
+**Introduces:** haproxy
 
 ### Terraform Config
 Edit `main.tf` to use the geth or parity module, and verify the correct resources are referenced in the haproxy section.
@@ -23,37 +23,37 @@ Supports both Ethereum clients (automatically, based on inventory)
 
 ### Steps
 
-1. Install Ansible roles from Galaxy (in workshop root directory):
+1. Enter the exercise directory:
+```bash
+cd 03_haproxy
+```
 
-    ansible-galaxy install -r requirements.yml
+2. Initialize the Terraform configuration, and view the execution plan:
+```bash
+terraform init
+terraform plan
+```
 
-2. Enter the exercise directory:
-
-    cd 03_haproxy
-
-3. Initialize the Terraform configuration, and view the execution plan:
-
-    terraform init
-    terraform plan
-
-4. Apply the Terraform config to build the infrastructure, then show the results:
-
-    terraform apply
-    terraform show
+3. Apply the Terraform config to build the infrastructure, then show the results:
+```bash
+terraform apply
+terraform show
+```
     
-6. Run the Ansible playbook to update Parity's configuration:
+4. Run the Ansible playbook to update Parity's configuration:
+```bash
+ansible-playbook -i terraform-inventory site.yml
+```
 
-    ansible-playbook -i terraform-inventory site.yml
+5. Obtain IP address of proxy, query it multiple times, and observe which backend handles each request
+```bash
+ip=$(terraform-inventory -list | jq -r .haproxy[0])
+for i in `seq 1 10`; do curl -k $ip:8545; sleep 1; done    
+```
 
-    docker ps
-    docker logs devcon4-parity_light-01
-    docker logs devcon4-parity_light-02
-    docker logs devcon4-haproxy
-
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
-    curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
-
-    terraform destroy
+6. Clean up the infrastructure by deleting everything:
+```bash
+terraform destroy
+```
 
 ---
