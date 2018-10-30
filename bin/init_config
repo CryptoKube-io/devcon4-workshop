@@ -34,15 +34,6 @@ function listGen() {
   echo;
 }
 
-function inventoryInit() {
-  # Create directory and symlink for terraform-inventory
-  inventory_dir="${b_dir}/inventory";
-	mkdir -p ${inventory_dir};
-	wget https://github.com/adammck/terraform-inventory/releases/download/v0.7-pre/terraform-inventory_v0.7-pre_linux_amd64.zip -O /tmp/terraform-inventory.zip;
-	unzip /tmp/terraform-inventory.zip -d ${inventory_dir};
-	rm /tmp/terraform-inventory.zip;
-}
-
 function makeSalt() {
   # Create variable length passwords
   LC_CTYPE=C;
@@ -62,40 +53,19 @@ function makePass() {
   echo "${my_pass}";
 }
 
-function randNum() {
-  # Generate random number of variable length with a default of 5 digits
-  local val
-  local len=${1:-5}
-  for (( x=0; x<${len}; x++ )); do
-    val+=($(echo $((RANDOM%9))));
-  done
-  printf -- "%s" "${val[@]}"
-}
-
-function randNum() {
-  # Generate random number
-  echo $(( RANDOM%99999 + 10000 ))
-}
-
-function haAuthKey() {
-  # Create ha_auth_key
-  dd if='/dev/urandom' bs=512 count=1 2>'/dev/null' | openssl sha1 | awk '{print $2}'
-}
-
 function setProjectName() {
   # Get project name from user
   read -p $'\n\e[34mEnter your project name\e[0m\nLeave blank for \'devcon4\'\n> ' project_name;
   project_name="${project_name:-devcon4}"
 }
 
-function getDomain() {
-  # Get domain name from user
-  read -p $'\n\e[34mEnter in the domain you would like to use\e[0m\nLeave blank for a default of example.com\n> ' domain;
-}
-
-function getDC() {
+function getRegion() {
   # Get data center list list
   regions=($(curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer ${do_token}" "https://api.digitalocean.com/v2/regions" | jq -r '.regions[].slug'))
+}
+
+function getMgmtIp() {
+  mgmt_ip=$(curl -4 https://ifconfig.co)
 }
 
 function setKeyVars() {
@@ -198,7 +168,7 @@ function SetVaultPass() {
   echo "${vault_pass}" > ${HOME}/.vaultpass.txt;
 }
 
-function setDC() {
+function setRegion() {
   # Set data center selection
   local valid
   until [[ "${valid}" == "true" ]]; do
@@ -225,11 +195,11 @@ do_token = "${do_token}"
 
 project = "${project_name}"
 
-region = "${region}"
+do_region = "${region}"
 
-image_slug = "ubuntu-18-04-x64"
+do_image_slug = "ubuntu-18-04-x64"
 
-keys = "${keyID}"
+do_keys = "${keyID}"
 
 private_key_path = "~/.ssh/id_rsa"
 
@@ -238,6 +208,8 @@ ssh_fingerprint = "${keyFinger}"
 public_key = "${public_key}"
 
 ansible_user = "ansible"
+
+mgmt_ip = "${mgmt_ip}"
 EOF
 }
 
@@ -246,9 +218,7 @@ function allGroups(){
   local group_file="${b_dir}/group_vars/all/vault.yml"
 cat << EOF > "${group_file}"
 ---
-vault_wp_db_name: "db_$(randNum)"
-vault_wp_db_user: "db_user$(randNum)"
-vault_wp_db_pass: "$(makePass)"
+vault_do_token: "${do_token}"
 EOF
   cd "${HOME}";
   echo -n "${group_file#*ch05_init_deploy/} - ";
@@ -256,32 +226,16 @@ EOF
   cd - &>/dev/null;
 }
 
-function setDomain() {
-  touch ${b_dir}/group_vars/all/main.yml
-  # Set domain in vars/main.yml file
-  if [[ ! -z "${domain}" ]]; then
-    if [[ $(grep -P '^domain:' "${b_dir}/group_vars/all/main.yml") ]]; then
-      sed -i "s/domain.*/domain: \"${domain}\"/" "${b_dir}/group_vars/all/main.yml";
-    else
-      echo 'domain: "'"${domain}"'"' >> "${b_dir}/group_vars/all/main.yml";
-    fi
-  else
-    sed -i '/domain.*/d' "${b_dir}/group_vars/all/main.yml";
-  fi
-}
-
 # Terraform Functions:
-inventoryInit;
 setProjectName;
-getDomain;
-getDC;
+getRegion;
+getMgmtIp;
 keyCheck;
-setDC;
+setRegion;
 terraConf;
 
 # Ansible Functions:
 SetVaultPass;
-setDomain;
 allGroups;
 
 # Final Output:
@@ -289,9 +243,4 @@ echo -e "${bold}${blue}\nRun the following commands to create your resources usi
 echo -e "${green}$ terraform init${fin}"
 echo -e "${green}$ terraform apply${fin}"
 echo -e "${blue}\nOnce that's done, execute the site.yml playbook:\n${fin}"
-echo -e "${green}$ ansible-playbook -i /usr/local/bin/terraform-inventory site.yml${fin}"
-echo -e "${blue}\nNginx will be configured to use ${und}${domain:-example.com}${fin}."
-echo -e "${blue}\nYou can also check your stats page for haproxy by going to the Droplet's public IP address.\n${fin}"
-echo -e "username: ${green}${ha_proxy_stats_user}${fin}"
-echo -e "password: ${green}${ha_proxy_stats_pass}${fin}"
-echo -e "port:     ${green}${ha_proxy_stats_port}${fin}"
+echo -e "${green}$ ansible-playbook -i terraform-inventory site.yml${fin}"

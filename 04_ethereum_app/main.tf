@@ -19,7 +19,7 @@ resource "digitalocean_droplet" "haproxy" {
   image = "${var.do_image_slug}"
   name = "${var.project}-proxy-${format("%02d", count.index + 1)}"
   region = "${var.do_region}"
-  size = "${var.do_proxy_size}"
+  size = "${var.proxy_do_size}"
   private_networking = true
   monitoring = true
   ssh_keys = ["${split(",",var.do_keys)}"]
@@ -48,7 +48,7 @@ resource "digitalocean_droplet" "parity_node" {
   image = "${var.do_image_slug}"
   name = "${var.project}-eth-${format("%02d", count.index + 1)}"
   region = "${var.do_region}"
-  size = "${var.do_eth_size}"
+  size = "${var.eth_do_size}"
   private_networking = true
   ssh_keys = ["${split(",",var.do_keys)}"]
   user_data = "${data.template_file.user_data_eth.rendered}"
@@ -76,7 +76,7 @@ resource "digitalocean_droplet" "app_node" {
   image = "${var.do_image_slug}"
   name = "${var.project}-app-${format("%02d", count.index + 1)}"
   region = "${var.do_region}"
-  size = "${var.do_app_size}"
+  size = "${var.app_do_size}"
   private_networking = true
   ssh_keys = ["${split(",",var.do_keys)}"]
   user_data = "${data.template_file.user_data_app.rendered}"

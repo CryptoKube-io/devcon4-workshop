@@ -19,11 +19,9 @@
 - src: https://github.com/CryptoKube-io/ansible-nodejs
   name: nodejs
 
-#- src: https://github.com/CryptoKube-io/ansible-nginx
-#  name: nginx
-#
-#- src: https://github.com/CryptoKube-io/ansible-geth
-#  name: geth
-#
-#- src: https://github.com/CryptoKube-io/ansible-consul
-#  name: consul
+- src: https://github.com/CryptoKube-io/ansible-ethstats-server
+  name: ethstats-server
+
+- src: https://github.com/CryptoKube-io/ansible-ethstats-client
+  name: ethstats-client
+

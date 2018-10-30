@@ -54,7 +54,7 @@ data "template_file" "user_data" {
   }
 }
 
-resource "digitalocean_firewall" "etherum_full" {
+resource "digitalocean_firewall" "ethereum_full" {
   name = "ethereum-full"
   droplet_ids = ["${digitalocean_droplet.parity_full.id}"]
 

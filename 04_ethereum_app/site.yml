@@ -16,6 +16,7 @@
         role: ubuntu
       tags: role-ubuntu
 
+
 - hosts: haproxy
   become: True
   tasks:
@@ -26,6 +27,7 @@
         backend_port: 80
         backend_group: parity_node
       tags: role-haproxy
+
 
 - hosts: parity_node
   become: True
@@ -45,6 +47,17 @@
         role: parity
       tags: role-parity
 
+    - import_role:
+        role: nodejs
+      vars:
+        nodejs_npm_global_packages: [ "pm2" ]
+      tags: role-nodejs
+
+    - import_role:
+        role: ethstats-client
+      tags: role-ethstats-client
+
+
 - hosts: app_node
   become: True
   tasks:
@@ -52,7 +65,7 @@
         role: nodejs
       tags: role-nodejs
 
-#    - import_role:
-#        role: ethstats
-#      tags: role-ethstats
+    - import_role:
+        role: ethstats-server
+      tags: role-ethstats-server
 
