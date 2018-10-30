@@ -14,7 +14,6 @@
   - [02: Full Node](02_full_node/README.md)
   - [03: HAProxy](03_proxy/README.md)
   - [04: Ethereum Application Server](04_ethereum_app/README.md)
-  - [05: IPFS Node](05_ipfs/README.md)
 - [Administrative Tooling](#administrative-tooling)
   - [Docker](#docker) (containerization)
   - [Ansible](#ansible) (configuration management)
@@ -27,12 +26,12 @@
     - [Nginx](#nginx)
   - [Key-value Store](#kv-store) and Service Discovery
     - [Consul](#consul)
-- [IPFS](#ipfs)
 - [Ethereum Node](#ethereum)
   - [Node Types](#node-types)
   - [Geth](#geth)
   - [Parity](#parity)
 - [Ethereum Applications](#ethereum-applications)
+- [IPFS](#ipfs)
 
 ---
 
@@ -89,7 +88,6 @@ It comes preconfigured with the following components:
 - [02: Full Node](02_full_node/README.md)
 - [03: HAProxy](03_proxy/README.md)
 - [04: Ethereum Application Server](04_ethereum_app/README.md)
-- [05: IPFS Node](05_ipfs/README.md)
 
 ---
 
