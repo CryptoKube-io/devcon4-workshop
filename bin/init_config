@@ -65,7 +65,7 @@ function getRegion() {
 }
 
 function getMgmtIp() {
-  mgmt_ip=$(curl -4 https://ifconfig.co)
+  mgmt_ip=$(curl -s -4 https://ifconfig.co)
 }
 
 function setKeyVars() {
@@ -118,8 +118,7 @@ function keyCheck() {
   # Check and compare local and remote SSH keys
   echo -e "${blue}\nChecking for existing SSH keys.${fin}";
   sleep 1;
-  remoteKeyExists;
-  if [[ localKeyExists && remoteKeyExists ]]; then
+  if localKeyExists && remoteKeyExists; then
     getRemoteFingers;
     getLocalFinger;
     for (( i=0; i<${#remote_fingers[@]}; i++ )); do
@@ -136,7 +135,7 @@ function keyCheck() {
       echo -e "${red}No Match located$.${fin}\nPushing your local SSH key up to DigitalOcean."
       putKey;
     fi
-  elif [[ localKeyExists && ! remoteKeyExists ]]; then
+  elif localKeyExists && ! remoteKeyExists; then
     getLocalFinger;
     putKey;
   else
@@ -215,7 +214,9 @@ EOF
 
 function allGroups(){
   # Create group_vars file for all groups
-  local group_file="${b_dir}/group_vars/all/vault.yml"
+  local allGroups_dir="${b_dir}/group_vars/all"
+  local group_file="${allGroups_dir}/vault.yml"
+  mkdir -p $allGroups_dir
 cat << EOF > "${group_file}"
 ---
 vault_do_token: "${do_token}"
@@ -224,6 +225,11 @@ EOF
   echo -n "${group_file#*ch05_init_deploy/} - ";
   ansible-vault encrypt --vault-password-file "${HOME}/.vaultpass.txt" "${group_file}";
   cd - &>/dev/null;
+}
+
+function installRoles(){
+  # Install Ansible Galaxy-style roles
+  ansible-galaxy install -r requirements.yml
 }
 
 # Terraform Functions:
@@ -237,10 +243,10 @@ terraConf;
 # Ansible Functions:
 SetVaultPass;
 allGroups;
+installRoles;
 
 # Final Output:
-echo -e "${bold}${blue}\nRun the following commands to create your resources using Terraform:\n${fin}"
-echo -e "${green}$ terraform init${fin}"
-echo -e "${green}$ terraform apply${fin}"
-echo -e "${blue}\nOnce that's done, execute the site.yml playbook:\n${fin}"
-echo -e "${green}$ ansible-playbook -i terraform-inventory site.yml${fin}"
+echo -e "${bold}${blue}\nNow you are ready to continue with the exercises!\n${fin}"
+echo -e "${green}https://github.com/CryptoKube-io/devcon4-workshop#exercises${fin}"
+#echo -e "${blue}\nOnce that's done, execute the site.yml playbook:\n${fin}"
+#echo -e "${green}$ ansible-playbook -i terraform-inventory site.yml${fin}"

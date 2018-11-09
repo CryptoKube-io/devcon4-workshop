@@ -6,7 +6,7 @@
 - [Intro](#intro)
 - [Prerequisites](#prerequisites)
 - [Initial Setup](#initial-setup)
-  - [Local Setup](#local-setup)
+  - [DigitalOcean Setup](#digitalocean-setup)
   - [Management Host](#management-host)
 - [Exercises](#exercises)
   - [00: Docker Light Client](00_docker_light_client/README.md)
@@ -52,8 +52,11 @@ We begin by introducing the adminstrative tooling and the major components of th
 It is possible to run the exercises locally, although it is recommended to use the provided management host image for greatest environment consistency.
 
 ### Inspiration
-"It's up to us. We cannot take for granted that the future will be better, and that means we need to work to create it today."
+*It's up to us. We cannot take for granted that the future will be better, and that means we need to work to create it today.*
 - *Peter Thiel, "Zero to One"*
+
+- Open source contribution is underrepresented relative to the prevelance of its usage.
+- The P2P crypto ecosystem is an ideal proving ground to demonstrate the effectiveness of the open source model.
 
 ---
 
@@ -65,20 +68,52 @@ It is possible to run the exercises locally, although it is recommended to use t
 ---
 
 ## Initial Setup
+### DigitalOcean Setup
+  1. Create DigitalOcean account - https://do.co/devcon4-eth
+  2. [Add SSH public key](https://www.digitalocean.com/docs/droplets/how-to/add-ssh-keys/)
+  3. [Create personal access token (API key)](https://www.digitalocean.com/docs/api/create-personal-access-token/)
 
-### Local Setup
-TODO
+### Management Host Provisioning
+[Create a DigitalOcean droplet](https://www.digitalocean.com/docs/droplets/how-to/create/) with the following options:
 
-### Management Host
-The management host is a 2GB droplet running Ubuntu Server 18.04 LTS. To provision the management host, run TODO
+  - **Image:** Ubuntu 18.04 x64
+  - **Size:** 2GB/2vCPU standard droplet
+  - **Datacenter region:** your choice
+  - **Additional options:**
+     - private networking
+     - monitoring
+     - user data (copy and paste the following):
+```yaml
+#cloud-config
 
-It comes preconfigured with the following components:
-  - Nginx+LetsEncrypt
-  - GoCD
-  - Ansible
-  - Terraform 
-  - Packer
-  - Virtualbox
+package_upgrade: true
+
+packages: [ "python", "python-pip", "git", "zip", "jq" ]
+
+runcmd:
+  - [curl, -o, /tmp/terraform.zip, "https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip"]
+  - [unzip, -d, /usr/local/bin/, /tmp/terraform.zip]
+  - [curl, -L, -o, /tmp/terraform-inventory.zip, "https://github.com/adammck/terraform-inventory/releases/download/v0.7-pre/terraform-inventory_v0.7-pre_linux_amd64.zip"]
+  - [unzip, -d, /usr/local/bin/, /tmp/terraform-inventory.zip]
+  - [pip, install, -U, pip, ansible]
+  - [git, clone, "https://github.com/cryptokube-io/devcon4-workshop.git", "/root/devcon4-workshop"]
+```
+  - **SSH keys:** select yours
+  - **Hostname:** devcon4-mgmt
+  - Click **Create**
+
+### Management Host Setup
+  1. Copy IP address of `devcon4-mgmt` from DigitalOcean console
+  2. SSH into management host: `ssh root@<IP_ADDRESS>`
+  3. Monitor cloud-init progress (ctrl+c to exit):
+    ```bash
+    tail -f /var/log/cloud-init-output.log
+    wait about 5 minutes, until log stops with `Cloud-init ... finished at ...
+    ```
+  4. Enter workshop directory: `cd devcon4-workshop`
+  5. Run initialization script: `bin/init_config`
+
+You are now ready to begin [the exercises](https://github.com/CryptoKube-io/devcon4-workshop#exercises)!
 
 ---
 
