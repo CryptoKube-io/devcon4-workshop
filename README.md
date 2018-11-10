@@ -116,7 +116,7 @@ You are now ready to begin [the exercises](https://github.com/CryptoKube-io/devc
 ---
 
 ## Exercises
-- [01: Light Client](01_light_client/README.md) (cloud)
+- [01: Light Client](01_light_client/README.md)
 - [02: Full Node](02_full_node/README.md)
 - [03: HAProxy](03_proxy/README.md)
 - [04: Ethereum Application Server](04_ethereum_app/README.md)

@@ -34,50 +34,56 @@ TODO
 
 ### Steps
 
-1. Enter the exercise directory:
+1. Enter the exercise directory, from the workshop root:
 ```bash
 cd 01_light_client
 ```
-
-2. Use the helper script to set Terraform variables:
-```bash
-bin/init_config
-```
-
-3. Initialize the Terraform configuration, get modules and view the execution plan:
+2. Initialize Terraform working directory:
 ```bash
 terraform init
+```
+3. Get Terraform modules:
+```bash
 terraform get
+```
+4. View Terraform execution plan:
+```bash
 terraform plan
 ```
-
-4. Apply the Terraform config to build the infrastructure, then show the results:
+5. Apply the Terraform config to build the infrastructure:
 ```bash
 terraform apply
+```
+6. Display the results:
+```bash
 terraform show
 ```
-    
-5. Run the Ansible playbook to install and configure Parity:
+7. Run the Ansible playbook to install and configure a Parity light client:
 ```bash
 ansible-playbook -i terraform-inventory site.yml
 ```
-
-6. Find the remote IP, SSH into the remote host, and show logs from our Parity light client:
+8. Find the remote IP, and SSH into the remote host:
 ```bash
 ip=$(terraform-inventory -list | jq -r .parity_light[0])
 ssh root@$ip
+```
+9. Show logs from our Parity light client (ctrl+c to exit):
+```bash
 journalctl -fu parity.service
 ```
-7. Query the Parity node using API calls to the RPC interface:
+10. Query Parity using the JSON-RPC interface:
 ```bash
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
 ```
+11. Logout from the SSH session (ctrl-d)
 
-8. Clean up the infrastructure by deleting everything:
+12. From the management host, clean up the infrastructure by deleting everything:
 ```bash
 terraform destroy
 ```
 
 ---
+
+Continue to [Exercise 02 - Full Node](../02_full_node/README.md) after returning to the workshop root: `cd /root/devcon4-workshop`
