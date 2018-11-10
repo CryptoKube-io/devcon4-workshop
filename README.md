@@ -103,11 +103,9 @@ runcmd:
 ### Management Host Setup
   1. Copy IP address of `devcon4-mgmt` from DigitalOcean console
   2. SSH into management host: `ssh root@<IP_ADDRESS>`
-  3. Monitor cloud-init progress (ctrl+c to exit):
-```bash
-  tail -f /var/log/cloud-init-output.log
-  wait about 5 minutes, until log stops with `Cloud-init ... finished at ...
-```
+  3. Monitor cloud-init progress (ctrl+c to exit): <br/>
+     `tail -f /var/log/cloud-init-output.log`<br/>
+     (~5 min, log ends with `Cloud-init ... finished at ...`)
   4. Enter workshop directory: `cd devcon4-workshop`
   5. Run initialization script: `bin/init_config`
 

@@ -222,13 +222,14 @@ cat << EOF > "${group_file}"
 vault_do_token: "${do_token}"
 EOF
   cd "${HOME}";
-  echo -n "${group_file#*ch05_init_deploy/} - ";
+  echo -n "${group_file} - ";
   ansible-vault encrypt --vault-password-file "${HOME}/.vaultpass.txt" "${group_file}";
   cd - &>/dev/null;
 }
 
 function installRoles(){
   # Install Ansible Galaxy-style roles
+  echo -e "\n${blue}Installing Ansible Roles${fin}\n"
   ansible-galaxy install -r requirements.yml
 }
 
