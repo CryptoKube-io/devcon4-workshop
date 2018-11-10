@@ -101,7 +101,7 @@ runcmd:
   - Click **Create**
 
 ### Management Host Setup
-  1. Copy IP address of `devcon4-mgmt` from DigitalOcean console
+  1. Copy IP address of `devcon4-mgmt` from DigitalOcean console (you may wish to add this to /etc/hosts)
   2. SSH into management host: `ssh root@<IP_ADDRESS>`
   3. Monitor cloud-init progress (ctrl+c to exit): <br/>
      `tail -f /var/log/cloud-init-output.log`<br/>

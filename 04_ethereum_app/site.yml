@@ -24,7 +24,7 @@
         role: haproxy
       vars:
         frontend_port: 8545
-        backend_port: 80
+        backend_port: 8545
         backend_group: parity_node
       tags: role-haproxy
 
@@ -45,6 +45,9 @@
 
     - import_role:
         role: parity
+      vars:
+        parity_rpc_address: "{{ansible_eth1.ipv4.address}}"
+        parity_rpc_allowed_hosts: '["all"]'
       tags: role-parity
 
     - import_role:
@@ -55,6 +58,8 @@
 
     - import_role:
         role: ethstats-client
+      vars:
+        ethstats_web3_host: "{{ansible_eth1.ipv4.address}}"
       tags: role-ethstats-client
 
 

@@ -50,7 +50,7 @@ variable "proxy_node_count" {
 variable "eth_do_size" {
   description = "Selected size for your provisioned Ethereum Droplets."
   type        = "string"
-  default     = "s-2vcpu-4gb"
+  default     = "s-4vcpu-8gb"
 }
 
 variable "app_do_size" {
