@@ -9,13 +9,11 @@
   - [DigitalOcean Setup](#digitalocean-setup)
   - [Management Host](#management-host)
 - [Exercises](#exercises)
-  - [00: Docker Light Client](00_docker_light_client/README.md)
-  - [01: Light Client](01_light_client/README.md) (cloud)
+  - [01: Light Client](01_light_client/README.md)
   - [02: Full Node](02_full_node/README.md)
   - [03: HAProxy](03_proxy/README.md)
   - [04: Ethereum Application Server](04_ethereum_app/README.md)
 - [Administrative Tooling](#administrative-tooling)
-  - [Docker](#docker) (containerization)
   - [Ansible](#ansible) (configuration management)
   - [Packer](#packer) (image builder)
   - [Terraform](#terraform) (cloud deployment)
@@ -40,7 +38,7 @@
 Welcome to the Architecting with Ethereum workshop, presented at Devcon IV in Prague on October 30, 2018.
 
 ### CryptoKube.io
-CryptoKube is an open source software stack for hosting peer-to-peer cryptographic applications. It currently consists of many separate modules (primarily Ansible, Terraform, and Docker). The ultimate goal is to provide a turnkey Kubernetes implementation (still under development).
+CryptoKube is an open source software stack for hosting peer-to-peer cryptographic applications. It currently consists of many separate modules (primarily Ansible and Terraform). The ultimate goal is to provide a turnkey Kubernetes implementation (still under development).
 
 Visit [CryptoKube.io](https://cryptokube.io) for the latest details.
 
@@ -118,7 +116,6 @@ You are now ready to begin [the exercises](https://github.com/CryptoKube-io/devc
 ---
 
 ## Exercises
-- [00: Docker Light Client](00_docker_light_client/README.md)
 - [01: Light Client](01_light_client/README.md) (cloud)
 - [02: Full Node](02_full_node/README.md)
 - [03: HAProxy](03_proxy/README.md)
@@ -127,7 +124,7 @@ You are now ready to begin [the exercises](https://github.com/CryptoKube-io/devc
 ---
 
 ## Administrative Tooling
-We'll primarily be using Terraform, Ansible, terraform-inventory, Docker, and Git.
+We'll primarily be using Terraform, Ansible, terraform-inventory, and Git.
 
 
 ### Terraform
@@ -169,27 +166,6 @@ To view a list of available commands, run `terraform` with no arguments. For det
 - Linux Academy: [Ansible Quick Start](https://linuxacademy.com/devops/training/course/name/ansible-quick-start)
 - [How To Test Ansible Roles with Molecule on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-test-ansible-roles-with-molecule-on-ubuntu-18-04)
 - [How to Manage Multistage Environments with Ansible](https://www.digitalocean.com/community/tutorials/how-to-manage-multistage-environments-with-ansible)
-
-
-### Docker
-*Docker is a computer program that performs operating-system-level virtualization also known as containerization.* -wikipedia
-
-**Basic Commands**
-To view a list of available commands, run `docker` with no arguemnts. For details about a command, run `docker <command> -h`
-- Containers:
-  - `docker ps` - List containers
-  - `docker logs` - Fetch the logs of a container
-  - `docker kill` - Kill one or more running containers
-  - `docker rm` - Remove one or more containers
-- Images:
-  - `docker images` - List images
-  - `docker rmi` - Remove one or more images
-
-**Links**
-- [Docker Reference documentation](https://docs.docker.com/reference/)
-  - [CLI reference](https://docs.docker.com/engine/reference/commandline/cli)
-- [Docker Community Edition](https://docs.docker.com/install/)
-- [Docker Hub](https://hub.docker.com/)
 
 
 ### Packer

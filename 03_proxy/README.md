@@ -7,11 +7,7 @@
 ### Terraform Config
 Edit `main.tf` to use the geth or parity module, and verify the correct resources are referenced in the haproxy section.
 
-### Docker Containers
-#### Ethereum
-- [geth](https://hub.docker.com/r/ethereum/client-go/) or [parity](https://hub.docker.com/r/parity/parity/) (your choice from previous exercise)
 #### HAProxy
-- Image: [haproxy](https://hub.docker.com/_/haproxy/)
 - Name: `devcon4-haproxy`
 - Command (params):
   - TODO
