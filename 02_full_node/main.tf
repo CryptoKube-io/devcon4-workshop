@@ -20,7 +20,7 @@ resource "digitalocean_droplet" "parity_full" {
   image = "${var.do_image_slug}"
   name = "${var.project}-parity-full-${format("%02d", count.index + 1)}"
   region = "${var.do_region}"
-  size = "${var.do_size}"
+  size = "${var.eth_do_size}"
   private_networking = true
   ssh_keys           = ["${split(",",var.do_keys)}"]
   user_data          = "${data.template_file.user_data.rendered}"

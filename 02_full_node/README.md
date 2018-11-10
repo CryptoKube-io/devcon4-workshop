@@ -6,9 +6,6 @@
 
 Our next goal is to deploy a full node to a DigitalOcean droplet with a dedicated data volume.
 
-### Terraform Config
-TODO
-
 ### DigitalOcean
 - Image: Ubuntu-18-04-x64
 - Name: `devcon4-parity-full-01`
@@ -38,45 +35,48 @@ TODO
 ```bash
 cd 02_full_node
 ```
-
-2. Use the helper script to set Terraform variables:
-```bash
-bin/init_config
-```
-
-3. Initialize the Terraform configuration, get modules and view the execution plan:
+2. Initialize Terraform working directory:
 ```bash
 terraform init
+```
+3. View Terraform execution plan:
+```bash
 terraform plan
 ```
-
-4. Apply the Terraform config to build the infrastructure, then show the results:
+4. Apply the Terraform config to build the infrastructure:
 ```bash
 terraform apply
+```
+5. Display the results:
+```bash
 terraform show
 ```
-    
-5. Run the Ansible playbook to install and configure Parity:
+6. Run the Ansible playbook to install and configure a Parity full node:
 ```bash
 ansible-playbook -i terraform-inventory site.yml
 ```
-
-6. Find the remote IP, SSH into the remote host, and show logs from our Parity light client:
+7. Find the remote IP, and SSH into the remote host:
 ```bash
 ip=$(terraform-inventory -list | jq -r .parity_full[0])
 ssh root@$ip
+```
+8. Show logs from our Parity node (ctrl-c to exit):
+```bash
 journalctl -fu parity.service
 ```
-7. Query the Parity node using API calls to the RPC interface:
+9. Query Parity using the JSON-RPC interface:
 ```bash
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":67}' http://127.0.0.1:8545
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_version","params":[],"id":67}' http://127.0.0.1:8545
 curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","method":"net_peerCount","params":[],"id":74}' http://127.0.0.1:8545
 ```
+10. Logout from the SSH session (ctrl-d)
 
-8. Clean up the infrastructure by deleting everything:
+11. From the management host, clean up the infrastructure by deleting everything:
 ```bash
 terraform destroy
 ```
 
 ---
+
+Continue to [Exercise 03 - Proxy](../03_proxy/README.md) after returning to the workshop root: `cd /root/devcon4-workshop`
