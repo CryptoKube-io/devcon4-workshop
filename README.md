@@ -106,8 +106,9 @@ runcmd:
   3. Monitor cloud-init progress (ctrl+c to exit): <br/>
      `tail -f /var/log/cloud-init-output.log`<br/>
      (~5 min, log ends with `Cloud-init ... finished at ...`)
-  4. Enter workshop directory: `cd devcon4-workshop`
-  5. Run initialization script: `bin/init_config`
+  4. Enable Terraform tab-completion: `terraform -install-autocomplete` (must re-login or start new shell)
+  5. Enter workshop directory: `cd devcon4-workshop`
+  6. Run initialization script: `bin/init_config`
 
 You are now ready to begin [the exercises](https://github.com/CryptoKube-io/devcon4-workshop#exercises)!
 

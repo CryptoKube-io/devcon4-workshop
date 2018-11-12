@@ -4,11 +4,13 @@
 
 **Introduces:** haproxy
 
+---
+
 ### Steps
 
 1. Enter the exercise directory:
 ```bash
-cd 03_haproxy
+cd 03_proxy
 ```
 2. Initialize the Terraform configuration, and view the execution plan:
 ```bash
@@ -31,13 +33,11 @@ for i in `seq 1 10`; do curl -k $ip; sleep 1; done
 ```
 6. View HAProxy statistics page in web browser:
 ```
-http://$ip/haproxy?stats
+echo http://$ip/haproxy?stats
 ```
 7. Clean up the infrastructure by deleting everything:
 ```bash
 terraform destroy
 ```
 
----
-
-Continue to [Exercise 04 - Ethereum Application](../04_ethereum_app/README.md) after returning to the workshop root: `cd /root/devcon4-workshop`
+8. Continue to [Exercise 04 - Ethereum Application](../04_ethereum_app/README.md) after returning to the workshop root: `cd /root/devcon4-workshop`

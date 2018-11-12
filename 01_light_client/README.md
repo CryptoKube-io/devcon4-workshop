@@ -4,33 +4,9 @@
 
 **Introduces:** digitalocean, parity
 
-Our next goal is to deploy light client to a DigitalOcean droplet. This time we will use Parity instead of Geth.
+Our first goal is to deploy a Parity Ethereum light client to a DigitalOcean droplet.
 
-### Terraform Config
-TODO
-
-### DigitalOcean
-- Image: 
-- Name: `devcon4-parity_light-01`
-- Size: 2gb
-- Firewall (allow):
-  - Ingress:
-    - TCP 22: allow from private net
-    - TCP 8545-8546: allow from private net
-    - TCP 30303: allow from all
-    - UDP 30301: allow from all
-  - Egress:
-    - TCP 22: allow to private net
-    - TCP 80: allow to all
-    - TCP 8545-8546: allow to private net
-    - TCP 30303: allow to all
-    - UDP 30301: allow to all
-
-### Ansible 
-- Inventory: `terraform-inventory`
-- Parity:
-  - network: kovan
-  - cache: 1024
+---
 
 ### Steps
 
@@ -84,6 +60,33 @@ curl -H "Content-Type: application/json" -X POST --data '{"jsonrpc":"2.0","metho
 terraform destroy
 ```
 
+13. Continue to [Exercise 02 - Full Node](../02_full_node/README.md) after returning to the workshop root: `cd /root/devcon4-workshop`
+
 ---
 
-Continue to [Exercise 02 - Full Node](../02_full_node/README.md) after returning to the workshop root: `cd /root/devcon4-workshop`
+### Terraform Config
+- Module: digitalocean-parity-light
+
+### DigitalOcean
+- Image: 
+- Name: `devcon4-parity_light-01`
+- Size: 2gb
+- Firewall (allow):
+  - Ingress:
+    - TCP 22: allow from private net
+    - TCP 8545-8546: allow from private net
+    - TCP 30303: allow from all
+    - UDP 30301: allow from all
+  - Egress:
+    - TCP 22: allow to private net
+    - TCP 80: allow to all
+    - TCP 8545-8546: allow to private net
+    - TCP 30303: allow to all
+    - UDP 30301: allow to all
+
+### Ansible 
+- Inventory: `terraform-inventory`
+- Parity:
+  - network: kovan
+  - cache: 1024
+
