@@ -173,7 +173,7 @@ function setRegion() {
   until [[ "${valid}" == "true" ]]; do
     echo -e "\n${blue}Available data centers${fin}"
     listGen regions
-    read -p $'\e[34mEnter number for your selection\e[0m > ' dc_selection;
+    read -p $'\e[34mEnter number for your selection\e[0m (MUST MATCH devcon4-mgmt REGION) > ' dc_selection;
     if (( ${dc_selection} > 0 && ${dc_selection} <= "${#regions[@]}" )) &>/dev/null; then
       echo -e "\n${green}Data center is now set.${fin}\n";
       valid=true;
