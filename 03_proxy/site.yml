@@ -22,7 +22,8 @@
     - import_role:
         role: haproxy
       vars:
-        frontend_port: 8545
-        backend_port: 80
-        backend_group: backend_node
+        haproxy_frontend_port: 80
+        haproxy_backend_port: 80
+        haproxy_backend_group: backend_node
+        haproxy_global_stats_enable: true
       tags: role-haproxy

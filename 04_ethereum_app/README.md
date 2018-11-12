@@ -29,12 +29,16 @@ ansible-playbook -i terraform-inventory site.yml
 ip=$(terraform-inventory -list | jq -r .haproxy[0])
 for i in `seq 1 10`; do curl -k $ip:8545; sleep 1; done    
 ```
-6. Obtain IP adderss of app server, and view in web browser:
+6. View HAProxy statistics page in web browser:
+```
+http://$ip:8545/haproxy?stats
+```
+7. Obtain IP address of app server, and view in web browser:
 ```bash
 ip=$(terraform-inventory -list | jq -r .app_node[0])
 echo "http://$ip:3000"
 ```
-7. Clean up the infrastructure by deleting everything:
+8. Clean up the infrastructure by deleting everything:
 ```bash
 terraform destroy
 ```
